@@ -1,0 +1,61 @@
+-- auto-generated definition
+create table "User"
+(
+    id           serial  not null
+        constraint user_pk
+            primary key,
+    name         varchar not null,
+    tg_id        integer,
+    "isAdmin"    boolean,
+    user_details varchar
+);
+
+alter table "User"
+    owner to postgres;
+
+create unique index user_tg_id_uindex
+    on "User" (tg_id);
+
+
+
+-- auto-generated definition
+create table "Server"
+(
+    id       serial not null
+        constraint server_pk
+            primary key,
+    name     varchar,
+    owner_id integer
+        constraint server_user_id_fk
+            references "User",
+    location varchar,
+    link     varchar,
+    contact  varchar,
+    about    varchar(100)
+);
+
+INSERT INTO public.server(
+	 name, owner_id, location, link, contact, about)
+	VALUES ('3214X', 1,'Москва','https://fogplay.mts.ru/promo/ar_fog_game/', '@tglink', 'about server');
+
+alter table "Server"
+    owner to postgres;
+
+
+create table "Favorites"
+(
+    id        serial not null
+        constraint favorites_pk
+            primary key,
+    user_id   integer
+        constraint favorites_user_id_fk
+            references "User",
+    server_id integer
+        constraint favorites_server_id_fk
+            references "Server"
+);
+
+alter table "Favorites"
+    owner to postgres;
+
+
